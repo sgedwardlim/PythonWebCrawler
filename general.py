@@ -2,32 +2,76 @@ import os
 
 # Each website you crawl is a seperate project (folder)
 def create_project_dir(directory):
-    if not os.path.exists(directory):
+    if not os.path.isdir(directory):
         print('Creating Project ' + directory)
         os.makedirs(directory)
 
 # Create the files that holds queue and crawled webpages (if does not exist)
 def create_data_file(project_name, base_url):
-    queue = project_name + "/queue.txt"
-    crawled = project_name + "/crawled.txt"
+    queue = os.path.join(project_name, "queue.txt")
+    crawled = os.path.join(project_name, "crawled.txt")
     if not os.path.isfile(queue):
         write_file(queue, base_url)
     if not os.path.isfile(crawled):
         write_file(crawled, '')
 
-# Writes file to specified directory initalized with text
+
+# Pass data file that you want to write to file
 def write_file(path, data):
-    f = open(path, 'w')
-    f.write(data)
-    f.close()
+    with open(path, 'w') as file:
+        file.write(data + '\n')
+
+# Append data to end of file
+def append_to_file(path, data):
+    with open(path, 'a') as file:
+        file.write(data + '\n')
+
+# Delete the contents of a file
+def delete_file_contents(path):
+    with open(path, 'w'):
+        pass
+
+
+# Read a file and convert each line to set items
+# Return a results set that contains no
+# duplicate data
+def file_to_set(file_name):
+    results = set()
+    with open(file_name, 'rt') as f:
+        for line in f:
+            # remove the '\n'
+            results.add(line.replace('\n', ''))
+
+    return results
+
+# Iterate thorugh a set to convert it to a file
+def set_to_file(path, results_data):
+    delete_file_contents(path)
+    for result in results_data:
+        append_to_file(path, result)
 
 
 
-create_project_dir('tarantulapets')
-create_data_file('tarantulapets', "http://www.tarantulapets.com/")
 
 
 
+
+
+
+# root_name = "grubdigest"
+# root_site = "http://www.grubdigest.com/"
+#
+# create_project_dir(root_name)
+# create_data_file(root_name, root_site)
+#
+#
+# num = 2
+#
+# if num is 5:
+#     queue = os.path.join(root_name, "queue.txt")
+#     crawled = os.path.join(root_name, "crawled.txt")
+#     delete_file_contents(queue)
+#     delete_file_contents(crawled)
 
 
 
