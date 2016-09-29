@@ -7,7 +7,7 @@ def create_project_dir(directory):
         os.makedirs(directory)
 
 # Create the files that holds queue and crawled webpages (if does not exist)
-def create_data_file(project_name, base_url):
+def create_data_files(project_name, base_url):
     queue = os.path.join(project_name, "queue.txt")
     crawled = os.path.join(project_name, "crawled.txt")
     if not os.path.isfile(queue):
@@ -19,7 +19,8 @@ def create_data_file(project_name, base_url):
 # Pass data file that you want to write to file
 def write_file(path, data):
     with open(path, 'w') as file:
-        file.write(data + '\n')
+        if data != '':
+            file.write(data + '\n')
 
 # Append data to end of file
 def append_to_file(path, data):
@@ -41,48 +42,14 @@ def file_to_set(file_name):
         for line in f:
             # remove the '\n'
             results.add(line.replace('\n', ''))
-
     return results
 
 # Iterate thorugh a set to convert it to a file
 def set_to_file(path, results_data):
-    delete_file_contents(path)
-    for result in results_data:
-        append_to_file(path, result)
-
-
-
-
-
-
-
-
-
-# root_name = "grubdigest"
-# root_site = "http://www.grubdigest.com/"
-#
-# create_project_dir(root_name)
-# create_data_file(root_name, root_site)
-#
-#
-# num = 2
-#
-# if num is 5:
-#     queue = os.path.join(root_name, "queue.txt")
-#     crawled = os.path.join(root_name, "crawled.txt")
-#     delete_file_contents(queue)
-#     delete_file_contents(crawled)
-
-
-
-
-
-
-
-
-
-
-
+    # delete_file_contents(path)
+    with open(path, 'w') as file:
+        for result in sorted(results_data):
+            file.write(result + "\n")
 
 
 
